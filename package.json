@@ -1,0 +1,26 @@
+{
+  "name": "remote-windows-helper-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "remote-windows-helper-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "keywords": ["mcp", "screenshot", "screen-recording", "windows", "telegram"],
+  "author": "",
+  "license": "ISC",
+  "description": "MCP server for remote Windows screen monitoring with Telegram delivery",
+  "files": ["build"],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "node-screenshots": "^0.2.8",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "typescript": "^5.9.3"
+  }
+}

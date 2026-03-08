@@ -1,0 +1,7 @@
+node_modules/
+build/
+*.mp4
+.env
+nul
+.opencode/
+.opencodeplans/
