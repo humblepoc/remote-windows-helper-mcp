@@ -1,37 +1,24 @@
 import { spawn, execSync } from "node:child_process";
-import { tmpdir, homedir } from "node:os";
-import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { join, dirname } from "node:path";
 import { randomUUID } from "node:crypto";
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+// Project root: build/utils/ffmpeg.js -> ../../ = project root
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const PROJECT_ROOT = join(__dirname, "..", "..");
 
 /**
  * Resolve the ffmpeg executable path.
- * Checks common Windows install locations before falling back to bare "ffmpeg".
+ * Checks project-local ffmpeg/ directory first, then falls back to PATH.
  */
 function resolveFfmpegPath(): string {
-  const candidates: string[] = [
-    join(homedir(), "ffmpeg", "bin", "ffmpeg.exe"),
-    "C:\\ffmpeg\\bin\\ffmpeg.exe",
-    "C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe",
-  ];
-
-  // Scan ~/ffmpeg for versioned subdirectories (e.g. ffmpeg-8.0.1-essentials_build)
-  const homeFFmpegDir = join(homedir(), "ffmpeg");
-  if (existsSync(homeFFmpegDir)) {
-    try {
-      const entries = readdirSync(homeFFmpegDir);
-      for (const entry of entries) {
-        candidates.push(join(homeFFmpegDir, entry, "bin", "ffmpeg.exe"));
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) {
-      return candidate;
-    }
+  // Project-local ffmpeg (standalone — the preferred location)
+  const localFfmpeg = join(PROJECT_ROOT, "ffmpeg", "ffmpeg.exe");
+  if (existsSync(localFfmpeg)) {
+    return localFfmpeg;
   }
 
   // Fallback: hope it's on PATH
