@@ -118,7 +118,7 @@ Add to your `opencode.json` (usually at `~/.config/opencode/opencode.json`):
       "type": "local",
       "command": ["node", "/path/to/remote-windows-helper-mcp/build/index.js"],
       "enabled": true,
-      "env": {
+      "environment": {
         "TELEGRAM_BOT_TOKEN": "your-bot-token",
         "TELEGRAM_CHAT_ID": "your-chat-id"
       }
